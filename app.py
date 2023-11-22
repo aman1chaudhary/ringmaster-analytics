@@ -512,6 +512,25 @@ def upload_stock_video():
             return jsonify({'message': 'No video_id or user email provided'})
     except Exception as e:
         return jsonify({'message': str(e)})
+    
+
+
+@app.route('/threeD_model', methods=['POST'])
+def threeD_model():
+    try:
+        videoItem = request.json.get('videoItem')
+    
+        if videoItem=="https://res.cloudinary.com/doi281cds/video/upload/v1700645944/kid_boxing_segment_dpj38e.mov":
+            threeDModelLink="https://res.cloudinary.com/doi281cds/image/upload/v1700644445/kid_boxing_default_mvty2z.glb"
+            threeDModelLink_id = extract_public_id_from_url(threeDModelLink)
+            print(threeDModelLink_id)
+
+            return jsonify({'message': 'Analysis of the video segment done successfully.','threeDModelLink':threeDModelLink_id})
+        else:
+            threeDModelLink_id=""
+            return jsonify({'message': 'Please wait model is running','threeDModelLink':threeDModelLink_id})
+    except Exception as e:
+        return jsonify({'message': str(e)})
 
 
 
