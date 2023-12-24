@@ -15,7 +15,8 @@ mongo_url = os.getenv('mongodb_url')
 client_name = os.getenv('client_name')
 
 
-app = Flask(__name__)
+# app = Flask(__name__)
+app = Flask(__name__, static_folder='./build', static_url_path='/')
 CORS(app)
 client = MongoClient(mongo_url, tlsAllowInvalidCertificates=True)
 mongo = client[client_name]
@@ -29,12 +30,13 @@ config(
 )
 
 
-@app.route('/')
-def home():
-    return "Hello this is flask backend"; 
+@app.route('/', defaults={'path': ''})
+@app.route('/<path>')
+def index(path):
+    return app.send_static_file('index.html')
 
 
-@app.route('/login', methods=['POST'])
+@app.route('/api/login', methods=['POST'])
 def login():
     email = request.json.get('email')
     password = request.json.get('password')
@@ -55,7 +57,7 @@ def login():
 
 
 
-@app.route('/register', methods=['POST'])
+@app.route('/api/register', methods=['POST'])
 def register():
     name = request.json.get('name')
     email = request.json.get('email')
@@ -78,7 +80,7 @@ def register():
         return response
 
 
-@app.route('/save_trimmed_video', methods=['POST'])
+@app.route('/api/save_trimmed_video', methods=['POST'])
 def save_trimmed_video():
     try:
         file = request.files['file']
@@ -136,7 +138,7 @@ def save_trimmed_video():
 
 
 
-@app.route('/upload_video', methods=['POST'])
+@app.route('/api/upload_video', methods=['POST'])
 def upload_video():
     try:
         file = request.files['file']
@@ -186,7 +188,7 @@ def extract_folder_name(url):
         return None  
 
 
-@app.route('/delete_video', methods=['DELETE'])
+@app.route('/api/delete_video', methods=['DELETE'])
 def delete_video():
     try:
         data = request.get_json()  # Get the data sent in the request body as JSON
@@ -261,7 +263,7 @@ def delete_video():
 #         return jsonify({"message": str(e)})
 
 
-@app.route('/delete_video_segment', methods=['DELETE'])
+@app.route('/api/delete_video_segment', methods=['DELETE'])
 def delete_video_segment():
     try:
         data = request.get_json()  # Get the data sent in the request body as JSON
@@ -296,7 +298,7 @@ def delete_video_segment():
 
 
 
-@app.route('/load_videos', methods=['GET'])
+@app.route('/api/load_videos', methods=['GET'])
 def load_videos():
     user_email = request.args.get('email')  # Get the user's email from the query parameters
     user = mongo.users.find_one({'email': user_email})
@@ -309,7 +311,7 @@ def load_videos():
     
 
 
-@app.route('/load_video_segments', methods=['GET'])
+@app.route('/api/load_video_segments', methods=['GET'])
 def load_video_segments():
     user_email = request.args.get('email')  # Get the user's email from the query parameters
     user = mongo.users.find_one({'email': user_email})
@@ -323,7 +325,7 @@ def load_video_segments():
 
 
 
-@app.route('/text_annotation', methods=['POST'])
+@app.route('/api/text_annotation', methods=['POST'])
 def save_text_annotation():
     try:
         data = request.json
@@ -357,7 +359,7 @@ def save_text_annotation():
     
 
 
-@app.route('/delete_text_annotation', methods=['DELETE'])
+@app.route('/api/delete_text_annotation', methods=['DELETE'])
 def delete_text_annotation():
     try:
         data = request.json
@@ -400,7 +402,7 @@ def delete_text_annotation():
 
 
 
-@app.route('/save_audio_annotation', methods=['POST'])
+@app.route('/api/save_audio_annotation', methods=['POST'])
 def save_audio_annotation():
     try:
         email = request.form.get('email')
@@ -441,7 +443,7 @@ def save_audio_annotation():
     except Exception as e:
         return jsonify({'message': 'Error saving audio annotation: ' + str(e)})
 
-@app.route('/delete_audio_annotation', methods=['DELETE'])
+@app.route('/api/delete_audio_annotation', methods=['DELETE'])
 def delete_audio_annotation():
     try:
         data = request.json
@@ -493,7 +495,7 @@ def delete_audio_annotation():
 
 
 
-@app.route('/upload_stock_video', methods=['POST'])
+@app.route('/api/upload_stock_video', methods=['POST'])
 def upload_stock_video():
     try:
         videoUrl = request.form.get('videoUrl')
@@ -515,7 +517,7 @@ def upload_stock_video():
     
 
 
-@app.route('/threeD_model', methods=['POST'])
+@app.route('/api/threeD_model', methods=['POST'])
 def threeD_model():
     try:
         videoItem = request.json.get('videoItem')

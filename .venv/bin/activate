@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/Users/amanchaudhary/Desktop/Sem 7/Cloud Computing Project/combat-sports-analytics-reactjs/server/.venv"
+VIRTUAL_ENV="/Users/amanchaudhary/Downloads/websites/combat-sports-analytics-reactjs/server/.venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

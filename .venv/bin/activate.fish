@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/Users/amanchaudhary/Desktop/Sem 7/Cloud Computing Project/combat-sports-analytics-reactjs/server/.venv"
+set -gx VIRTUAL_ENV "/Users/amanchaudhary/Downloads/websites/combat-sports-analytics-reactjs/server/.venv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH

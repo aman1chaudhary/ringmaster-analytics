@@ -1,6 +1,8 @@
 .env
 myenv
 .venv
+venv
+
 __pychche__
 __pycache__/
 
